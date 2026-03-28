@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DEPLOY_SERVER = "13.234.119.129"
+        DEPLOY_SERVER = "13.206.13.130"
         APP_DIR = "node-app"
     }
 
