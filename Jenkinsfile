@@ -8,12 +8,6 @@ pipeline {
 
     stages {
 
-        stage('Clone Code') {
-            steps {
-                git branch: 'main', url: 'https://github.com/Adithyadev123/node-app.git'
-            }
-        }
-
         stage('Install Dependencies') {
             steps {
                 sh 'npm install'
@@ -29,14 +23,14 @@ pipeline {
         stage('Deploy') {
             steps {
                 sshagent(['b3de989f-fcd0-4c5c-a848-fbb3fece1b70']) {
-                    sh '''
-                    ssh -o StrictHostKeyChecking=no ubuntu@$DEPLOY_SERVER << EOF
-                    cd $APP_DIR || exit
-                    git pull
-                    npm install
+                    sh """
+                    ssh -o StrictHostKeyChecking=no ubuntu@${DEPLOY_SERVER} '
+                    cd ${APP_DIR} &&
+                    git pull &&
+                    npm install &&
                     pm2 restart node-app || pm2 start app.js --name node-app
-                    EOF
-                    '''
+                    '
+                    """
                 }
             }
         }
